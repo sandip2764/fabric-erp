@@ -44,4 +44,16 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return match ($user->role->name) {
+            'admin'   => redirect()->route('admin.dashboard'),
+            'stock'   => redirect()->route('stock.dashboard'),
+            'billing' => redirect()->route('billing.dashboard'),
+            'pos'     => redirect()->route('pos.dashboard'),
+            default   => redirect('/login'),
+        };
+    }
+
 }
